@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\AuthController;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +26,13 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']); 
 });
-
 // Route::get('/me', [AuthController::class, 'me'])->middleware('jwt.auth');
 // Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth');
+
+Route::group(["middleware" => "jwt.auth"] , function() {
+    Route::post('/tasks', [TaskController::class, 'createTask']); 
+    Route::get('/tasks', [TaskController::class, 'getAllTasks']);
+    Route::get('/tasks/{id}', [TaskController::class, 'getTaskById']);
+    Route::put('/tasks/{id}', [TaskController::class, 'updateTask']);
+    Route::delete('/tasks/{id}', [TaskController::class, 'deleteTask']);
+});
