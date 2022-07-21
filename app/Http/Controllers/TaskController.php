@@ -176,6 +176,17 @@ class TaskController extends Controller
                 );
             }
 
+            $validator = Validator::make($request->all(), 
+            [
+                'title' => 'required|string|max:255',
+                'status' => 'required|boolean'
+            ]);
+            
+            if($validator->fails()){
+                return response()->json($validator->errors()->toJson(),400);
+            }
+
+
             $title = $request->input('title');
 
             $status = $request->input('status');
@@ -196,7 +207,8 @@ class TaskController extends Controller
             return response()->json(
                 [
                     'success' => true,
-                    'message' => "Task ".$id." updated successfully"
+                    'message' => "Task ".$id." updated successfully",
+                    'data' => $task
                 ],
                 200
             );
