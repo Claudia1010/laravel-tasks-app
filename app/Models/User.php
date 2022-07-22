@@ -52,18 +52,19 @@ return $this->getKey();
 *
 * @return array
 */
-public function getJWTCustomClaims()
-{
-return [];
-}
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
-public function tasks(){
-//cada usuario puede tener varias tareas
-    return $this->hasMany(Task::class);
+    public function tasks(){
+    //cada usuario puede tener varias tareas
+        return $this->hasMany(Task::class);
 
-}
-public function roles()
-{
-    return $this->belongsToMany(Role::class);
-}
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }
