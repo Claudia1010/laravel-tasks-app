@@ -38,5 +38,6 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::delete('/tasks/{id}', [TaskController::class, 'deleteTask']);
     Route::get('/user/task/{id}', [TaskController::class, 'getUserByIdTask']);
 //permite que a un usuario le asigne el rol de superadmin
-    Route::post('/user/super_admin/{id}', [UserController::class, 'addSuperAdminRoleToUser']); 
+    Route::post('/user/add_super_admin/{id}', [UserController::class, 'addSuperAdminRoleToUser']); 
+    Route::post('/user/remove_super_admin/{id}', [UserController::class, 'removeSuperAdminRoleToUser']); 
 });
