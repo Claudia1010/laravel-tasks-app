@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -64,7 +65,14 @@ class TaskController extends Controller
 
             $userId = auth()->user()->id;
 
-            $tasks = Task::query()->where('user_id', $userId)->get()->toArray();
+            // $tasks = Task::query()->where('user_id', $userId)->get()->toArray();
+
+            //tambien se puede usar el query usando las relaciones
+            // $tasks = User::query()->find($userId)->tasks;
+
+            //el ultimo tasks esta trayendo las tareas que corresponden al userId desde el modelo user.php
+            $tasks = User::find($userId)->tasks;
+
 
             return response()->json(
                 [
@@ -225,4 +233,36 @@ class TaskController extends Controller
             );
         }
     }
-}
+
+    public function getUserByIdTask($id){
+        try {
+
+            //recupero la tarea q corresponde a ese Id, lo guardo en $task
+            $task = Task::query()->find($id);
+
+           /*con esa tarea voy al modelo user y por la relacion creada con task
+            traigo el userId y lo guardo en $user*/
+            $user = $task->user;
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Getting user with task ".$id,
+                    'data' => $user
+                ],
+                200
+            );
+        } catch (\Exception $exception) {
+            Log::error("Error getting user: ". $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Error bringing user"
+                ],
+                500
+            );
+        }
+    }
+ }
+

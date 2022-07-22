@@ -56,4 +56,11 @@ public function getJWTCustomClaims()
 {
 return [];
 }
+
+public function tasks(){
+//cada usuario puede tener varias tareas
+    return $this->hasMany(Task::class);
+
+}
+
 }
